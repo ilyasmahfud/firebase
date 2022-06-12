@@ -6,8 +6,15 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 const db = admin.firestore();
 
-const userApp = express();
+const authMiddleware = require('../authMiddleware');
+const { app } = require("firebase-admin");
 
+const userApp = express();
+// apply auth for all endpoint
+userApp.use(authMiddleware);
+
+// use the auth for specific endpoint
+// userApp.get('/', authMiddleware,async (req, res) => {
 userApp.get('/', async (req, res) => {
     const snapshot = await db.collection('users').get();
 

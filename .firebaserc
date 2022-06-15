@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "learn-firebase-function-efcc1"
-  }
+    "default": "learn-firebase-function-efcc1",
+    "testing": "myskill-web"
+  },
+  "targets": {}
 }

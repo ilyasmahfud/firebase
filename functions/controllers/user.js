@@ -40,30 +40,40 @@ userApp.get('/:id', async (req, res) => {
 })
 
 userApp.post('/', async (req, res) => {
-    const user = req.body;
-
-    await db.collection('nama_barang').add(user);
-
-    request.put('http://localhost:9200/learn_elasticesearch/_doc/2',
-            { json: user },
-            function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    res.json({
-                        code: 201,
-                        message: "Collectin Saved.", 
-                        result: user
-                    });
-                    res.status(201).send;
-                } else {
-                    res.json({
-                        code: 400,
-                        message: "eror when save to elasaticsearch.", 
-                        result: false
-                    });
-                    res.status(400).send;
-                }
-            }
+    const collection = req.body;
+    
+    await db.collection('nama_barang').add(collection).then(
+        docRef => {
+            var url_elasticsearch = 'http://localhost:9200/learn_elasticesearch/_doc/';
+            var url = url_elasticsearch.concat(String(docRef.id))
+            request.put(url,
+                    { json: collection },
+                    function (error, response, body) {
+                        if (!error) {
+                            res.json({
+                                code: 201,
+                                message: "Collectin Saved.", 
+                                result: collection,
+                                id: docRef.id,
+                                url : url
+                            });
+                            res.status(201).send;
+                        } else {
+                            res.json({
+                                code: 400,
+                                message: "eror when save to elasaticsearch.", 
+                                result: false,
+                                id: docRef.id,
+                                result: collection,
+                                url : url
+                            });
+                            res.status(400).send;
+                        }
+                    }
+            );
+        }
     );
+
 })
 
 userApp.put('/:id', async (req, res) => {

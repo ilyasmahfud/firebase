@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 const express = require('express');
 const cors = require('cors');
+const request = require('request');
 
 const admin = require('firebase-admin');
 admin.initializeApp();
@@ -43,7 +44,26 @@ userApp.post('/', async (req, res) => {
 
     await db.collection('nama_barang').add(user);
 
-    res.status(201).send;
+    request.put('http://localhost:9200/learn_elasticesearch/_doc/2',
+            { json: user },
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    res.json({
+                        code: 201,
+                        message: "Collectin Saved.", 
+                        result: user
+                    });
+                    res.status(201).send;
+                } else {
+                    res.json({
+                        code: 400,
+                        message: "eror when save to elasaticsearch.", 
+                        result: false
+                    });
+                    res.status(400).send;
+                }
+            }
+    );
 })
 
 userApp.put('/:id', async (req, res) => {

@@ -7,7 +7,7 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 const db = admin.firestore();
 
-const authMiddleware = require('../authMiddleware');
+const authMiddleware = require('../middleware/authMiddleware');
 const { app } = require("firebase-admin");
 
 const userApp = express();

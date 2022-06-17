@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express-validation": "^4.1.0"
+  }
+}

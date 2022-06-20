@@ -42,36 +42,34 @@ const getSingleCourse = async (req, res) => {
 const searchData = async (req, res) => {
     const keyword = req.query.keyword;
 
-        await entityRef.where("name",conta)
+    await entityRef.where("name",conta)
 
-            const data = Object.entries(snapshot.val());
+        const data = Object.entries(snapshot.val());
 
-            var result = [];
-            data.forEach(element => {
-                if (!(element[1].name.search(keyword))) {
-                    let id = element[0];
-                    let data = element[1];
+        var result = [];
+        data.forEach(element => {
+            if (!(element[1].name.search(keyword))) {
+                let id = element[0];
+                let data = element[1];
 
-                    result.push({id, ...data});
-                }
-            });
-            
-            if (result.length == 0) {
-                res.json({
-                    message: "Error: No collection found", 
-                    result: false
-                });
-            } else {
-                res.json({
-                    message: "successfully fetch data", 
-                    result: true, 
-                    // data: data
-                    data: result
-                    // data: snapshot.val()
-                });
+                result.push({id, ...data});
             }
         });
-    });
+        
+        if (result.length == 0) {
+            res.json({
+                message: "Error: No collection found", 
+                result: false
+            });
+        } else {
+            res.json({
+                message: "successfully fetch data", 
+                result: true, 
+                // data: data
+                data: result
+                // data: snapshot.val()
+            });
+        }
 }
 
 // judul, deskripsi, imageUrl, createdAt, publishedAt, category, tags 

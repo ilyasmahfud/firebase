@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "learn-firebase-function-efcc1",
+    "default": "myskill-web",
     "testing": "myskill-web"
   },
   "targets": {}

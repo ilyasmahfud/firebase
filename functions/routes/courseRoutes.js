@@ -1,7 +1,9 @@
 const config = require('../config/config');
 const auth = require('../middleware/authMiddleware')
 const {
-    getAllCourse, getSingleCourse, searchData, AddCourse, updateCourse, deleteCourse
+    getAllCourse, getSingleCourse, 
+    searchData, 
+    AddCourse, updateCourse, deleteCourse, sortData
 } = require('../controllers/coursesController');
 
 const express = config.express;
@@ -12,6 +14,7 @@ const router = config.express();
 router.get('/allCourse', getAllCourse);
 router.get('/singleCourse/:id', getSingleCourse);
 router.get('/searchData', searchData);
+router.get('/sortData', sortData);
 
 const userApp = router.use(auth);
 

@@ -1,16 +1,22 @@
-const express = require('express');
-const functions = require("firebase-functions");
-
+const config = require('../config/config');
+const auth = require('../middleware/authMiddleware')
 const {
-    getAllCourse, getSingleCourse, AddCourse, updateCourse, deleteCourse
+    getAllCourse, getSingleCourse, searchData, AddCourse, updateCourse, deleteCourse
 } = require('../controllers/coursesController');
 
-const router = express();
+const express = config.express;
+const functions = config.functions;
+const router = config.express();
+
 
 router.get('/allCourse', getAllCourse);
 router.get('/singleCourse/:id', getSingleCourse);
-router.post('/add', AddCourse);
-router.put('/edit/:id', updateCourse);
-router.delete('/delete/:id', deleteCourse);
+router.get('/searchData', searchData);
+
+const userApp = router.use(auth);
+
+userApp.post('/add', AddCourse);
+userApp.put('/edit/:id', updateCourse);
+userApp.delete('/delete/:id', deleteCourse);
 
 exports.courses = functions.https.onRequest(router);

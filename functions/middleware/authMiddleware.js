@@ -12,8 +12,12 @@ module.exports = validateFirebaseIdToken = async (req, res, next) => {
         'Authorization: Bearer <Firebase ID Token>',
         'or by passing a "__session" cookie.'
       );
-      res.status(403).send('Unauthorized');
-      return;
+      
+      return res.status(403).json({
+        code: 403,
+        message: "not authorized.", 
+        result: false,
+      });;
     }
   
     let idToken;
@@ -27,8 +31,11 @@ module.exports = validateFirebaseIdToken = async (req, res, next) => {
       idToken = req.cookies.__session;
     } else {
       // No cookie
-      res.status(403).send('Unauthorized');
-      return;
+      return res.status(403).json({
+        code: 403,
+        message: "not authorized, no token.", 
+        result: false,
+      });;
     }
   
     try {
@@ -39,7 +46,11 @@ module.exports = validateFirebaseIdToken = async (req, res, next) => {
       return;
     } catch (error) {
       functions.logger.error('Error while verifying Firebase ID token:', error);
-      res.status(403).send('Unauthorized');
-      return;
+      
+      return res.status(403).json({
+        code: 403,
+        message: "Error while verifying Firebase ID token.", 
+        result: false,
+      });;
     }
 };

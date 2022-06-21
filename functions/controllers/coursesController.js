@@ -242,16 +242,32 @@ const sortData = async (req, res) => {
     const sort_by = req.query.sort_by;
     const order_by = req.query.order_by;
 
-    var data = {
-        query : {
-            match_all : {}
-        },
-        sort : [{
-            createdAt : {
-                "order" : order_by,
-                "format": "strict_date_optional_time_nanos"
-            }}
-        ]
+    if (sort_by == 'name') {
+        var data = {
+            query : {
+                match_all : {}
+            },
+            sort : [{
+                'name.keyword' : {
+                    order : order_by,
+                    // format: "keyword"
+                    // format: "strict_date_optional_time_nanos"
+                }}
+            ]
+        }
+    } else {
+        var data = {
+            query : {
+                match_all : {}
+            },
+            sort : [{
+                'createdAt.keyword' : {
+                    order : order_by,
+                    // format: "keyword"
+                    // format: "strict_date_optional_time_nanos"
+                }}
+            ]
+        }
     }
 
     var url_elasticsearch = process.env.URL_ELASTIC + 'elearning/_search/';
@@ -272,14 +288,14 @@ const sortData = async (req, res) => {
             } else {
                 var resultArray = [];
                 
-                // body.hits.hits.forEach(element => {
-                //     resultArray.push(element._source);
-                // });
+                body.hits.hits.forEach(element => {
+                    resultArray.push(element._source);
+                });
 
                 return res.status(200).json({
                     code: 200,
                     message: "data found", 
-                    results: body,
+                    results: resultArray,
                     // result: body.hits.hits,
                 });
             }
